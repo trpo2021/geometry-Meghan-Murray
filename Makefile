@@ -1,2 +1,2 @@
 all:
-	gcc -o geometry -Wall *.c -lm
+	gcc -o geometry -Wall main.c -lm
