@@ -1,1 +1,6 @@
-geometry
+
+bin/geometry
+*.a
+*.d
+*.o
+
