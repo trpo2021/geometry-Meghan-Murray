@@ -1,7 +1,4 @@
 #include "geometry.h"
-#include <ctype.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 int skip_space(char input_str[], int i)
 {
@@ -11,37 +8,71 @@ int skip_space(char input_str[], int i)
     return i;
 }
 
+void out_error(int x)
+{
+    switch (x) {
+    case 1:
+        printf("Circles match: not intersect\n");
+        break;
+    case 2:
+        printf("Circles don't touch: not intersect\n");
+        break;
+    case 3:
+        printf("Circles touch at one point: not intersect\n");
+        break;
+    case 4:
+        printf("Circles intersect\n");
+        break;
+    case -1:
+        printf("Error: expected 'circle'\n");
+        break;
+    case -2:
+        printf("Error: expected '('\n");
+        break;
+    case -3:
+        printf("Error: expected 'number or , '\n");
+        break;
+    case -4:
+        printf("Error: expected ')'\n");
+        break;
+    case -5:
+        printf("Error: unexpected token\n");
+        break;
+    case -6:
+        printf("Error: expected '<double>'\n");
+        break;
+    case -7:
+        printf("Error: expected '<unsigned double>'\n");
+        break;
+    default:
+        printf("Input is correct\n(case insensitive and ignoring "
+               "whitespace)\n");
+        break;
+    }
+}
+
 int check_point(char input_str[], int i, int* k)
 {
     int j = 0;
     if (input_str[i] == '-') {
         i++;
-        k++;
+        (*k)++;
     }
     if (isdigit(input_str[i]) == 0) {
-        printf("Error at column %d '%c': expected '<double>'\n",
-               i,
-               input_str[i]);
-        exit(0);
+        return -6;
     }
     while ((isdigit(input_str[i]) > 0) || (input_str[i] == '.')) {
         if ((input_str[i] == '.') && (j == 0)) {
             j = i;
         }
         i++;
-        k++;
+        (*k)++;
         if ((input_str[i] == '.') && (j > 0)) {
-            printf("Error at column %d '%c': expected '<double>'\n",
-                   i,
-                   input_str[i]);
-            exit(0);
+            return -6;
         }
     }
     if ((input_str[j] == '.') && (isdigit(input_str[j + 1]) == 0)) {
-        printf("Error at column %d '%c': expected '<double>'\n",
-               i,
-               input_str[i]);
-        exit(0);
+        return -6;
     }
     return i;
 }
@@ -50,29 +81,20 @@ int check_rad(char input_str[], int i, int* k)
 {
     int j = 0;
     if (isdigit(input_str[i]) == 0) {
-        printf("Error at column %d '%c': expected '<unsigned double>'\n",
-               i,
-               input_str[i]);
-        exit(0);
+        return -7;
     }
     while ((isdigit(input_str[i]) > 0) || (input_str[i] == '.')) {
         if ((input_str[i] == '.') && (j == 0)) {
             j = i;
         }
         i++;
-        k++;
+        (*k)++;
         if ((input_str[i] == '.') && (j > 0)) {
-            printf("Error at column %d '%c': expected '<double>'\n",
-                   i,
-                   input_str[i]);
-            exit(0);
+            return -6;
         }
     }
     if ((input_str[j] == '.') && (isdigit(input_str[j + 1]) == 0)) {
-        printf("Error at column %d '%c': expected '<double>'\n",
-               i,
-               input_str[i]);
-        exit(0);
+        return -6;
     }
     return i;
 }
@@ -85,29 +107,30 @@ int correct_str(char input_str[])
     for (; (input_str[i] != '(') && (isalpha(input_str[i]) > 0);
          i++, k++, g++) {
         if (check_str[g] != (tolower(input_str[i]))) {
-            printf("Error at column %d '%c': expected 'circle'\n",
-                   i,
-                   input_str[i]);
-            exit(0);
+            return -1;
         }
     }
     i = skip_space(input_str, i);
     if (input_str[i] != '(') {
-        printf("Error at column %d '%c': expected '('\n", i, input_str[i]);
-        exit(0);
+        return -2;
     } else {
         i++;
         k++;
     }
     i = skip_space(input_str, i);
     i = check_point(input_str, i, &k);
+    if (i == -1) {
+        return -1;
+    }
     k++;
     i = skip_space(input_str, i);
     i = check_point(input_str, i, &k);
+    if (i == -1) {
+        return -1;
+    }
     i = skip_space(input_str, i);
     if (input_str[i] != ',') {
-        printf("Error at column %d '%c': expected ','\n", i, input_str[i]);
-        exit(0);
+        return -3;
     } else {
         i++;
         k++;
@@ -115,18 +138,19 @@ int correct_str(char input_str[])
     k++;
     i = skip_space(input_str, i);
     i = check_rad(input_str, i, &k);
+    if (i == -1) {
+        return -1;
+    }
     i = skip_space(input_str, i);
     if (input_str[i] != ')') {
-        printf("Error at column %d '%c': expected ')'\n", i, input_str[i]);
-        exit(0);
+        return -4;
     } else {
         i++;
         k++;
     }
     i = skip_space(input_str, i);
     if (input_str[i] != '\n') {
-        printf("Error at column %d '%c': unexpected token\n", i, input_str[i]);
-        exit(0);
+        return -5;
     }
     return k;
 }
