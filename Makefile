@@ -1,8 +1,9 @@
 APP_NAME = geometry
 LIB_NAME = libgeometry
+APP_TEST_NAME = geometry_test
 
 CFLAGS = -Wall -Wextra -Werror
-CPPFLAGS = -I src -MP -MMD
+CPPFLAGS = -I thirdparty -I src -MP -MMD
 CC = gcc
 LDFLAGS =
 LDLIBS =
@@ -10,14 +11,20 @@ LDLIBS =
 BIN_DIR = bin
 OBJ_DIR = obj
 SRC_DIR = src
+TEST_DIR = test
+
 
 APP_PATH = $(BIN_DIR)/$(APP_NAME)
 LIB_PATH = $(OBJ_DIR)/$(SRC_DIR)/$(LIB_NAME)/$(LIB_NAME).a
+TEST_PATH = $(BIN_DIR)/$(TEST_DIR)/$(APP_TEST_NAME)
 
 SRC_EXT = c
 
 APP_SOURCES = $(shell find $(SRC_DIR)/$(APP_NAME) -name '*.$(SRC_EXT)')
 APP_OBJECTS = $(APP_SOURCES:$(SRC_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/$(SRC_DIR)/%.o)
+
+APP_TEST_SOURCES = $(shell find $(TEST_DIR) -name '*.$(SRC_EXT)')
+APP_TEST_OBJECTS = $(APP_TEST_SOURCES:$(TEST_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/$(TEST_DIR)/%.o)
 
 LIB_SOURCES = $(shell find $(SRC_DIR)/$(LIB_NAME) -name '*.$(SRC_EXT)')
 LIB_OBJECTS = $(LIB_SOURCES:$(SRC_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/$(SRC_DIR)/%.o)
@@ -37,6 +44,14 @@ $(LIB_PATH): $(LIB_OBJECTS)
 
 $(OBJ_DIR)/%.o: %.c
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) $< -o $@ 
+
+test: $(TEST_PATH)
+
+$(OBJ_DIR)/$(TEST_DIR)/%.o: %.c
+	gcc -c $(CFLAGS) $(CPPFLAGS) $< -o $@
+
+$(TEST_PATH): $(APP_TEST_OBJECTS) $(LIB_PATH)
+	gcc $(CFLAGS) $(CPPFLAGS) $^ -o $@ -lm
 
 .PHONY: clean
 clean:
