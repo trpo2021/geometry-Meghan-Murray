@@ -66,10 +66,10 @@ void intersection(char* string, char* string_2)
     y_2 = get_point(string_2, i);
     radius_2 = get_radius(string_2);
 
-    D = sqrt((pow (x_2 - x_1, 2))+(pow (y_2 - y_1, 2)));
-    if (D <= radius + radius_2){
-	printf("Circles match\n");}
-	else if (D > radius + radius_2) {
-    printf("Circles no match\n");}
+    D = sqrt((pow(x_2 - x_1, 2)) + (pow(y_2 - y_1, 2)));
+    if (D <= radius + radius_2) {
+        printf("Circles match\n");
+    } else if (D > radius + radius_2) {
+        printf("Circles no match\n");
+    }
 }
-

@@ -1,9 +1,9 @@
 #pragma once
 
+#include <ctype.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
 
 int skip_space(char input_str[], int i);
 int check_point(char input_str[], int i, int* k);

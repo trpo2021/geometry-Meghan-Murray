@@ -21,7 +21,7 @@ int main()
     string = calloc(size_string, sizeof(char));
     str_copy(input_str, string);
     free(input_str);
-//    output(string);
+    //    output(string);
     input_str = calloc(max_str, sizeof(char));
 
     printf("Circle 2:");
@@ -34,18 +34,18 @@ int main()
     string_2 = calloc(size_string, sizeof(char));
     str_copy(input_str, string_2);
     free(input_str);
-//    output(string_2);
+    //    output(string_2);
 
     double p = perimeter(string);
     printf("perimeter #1 = %.3f\n", p);
     double s = area(string);
     printf("area #1 = %.3f\n", s);
-    
+
     double p_2 = perimeter(string_2);
     printf("perimeter #2 = %.3f\n", p_2);
     double s_2 = area(string_2);
     printf("area #2 = %.3f\n", s_2);
-    
+
     intersection(string, string_2);
 
     free(string);
