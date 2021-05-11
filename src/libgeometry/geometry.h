@@ -16,4 +16,4 @@ double area(char* output_str);
 double get_radius(char* output_str);
 double get_point(char* output_str, int i);
 void out_error(int x);
-void intersection(char* output_str, char* output_str_2);
+int intersection(char* output_str, char* output_str_2);

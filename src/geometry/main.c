@@ -46,7 +46,12 @@ int main()
     double s_2 = area(string_2);
     printf("area #2 = %.3f\n", s_2);
 
-    intersection(string, string_2);
+    int result = intersection(string, string_2);
+    if (result == 1) {
+        printf("circles intersect \n");
+    } else if (result == 2) {
+        printf("circles not intersect \n");
+    }
 
     free(string);
     free(string_2);
