@@ -1,0 +1,7 @@
+*.a
+*.d
+*.o
+bin/test/geometry_test
+input_test
+bin/geometry
+
